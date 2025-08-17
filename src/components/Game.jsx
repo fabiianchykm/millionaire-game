@@ -7,6 +7,7 @@ export default function Game() {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [gameOver, setGameOver] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [gameWon, setGameWon] = useState(false);
   const [roundOver, setRoundOver] = useState(false);
   const [className, setClassName] = useState('answer');
   const [earned, setEarned] = useState("Нічого");
@@ -79,6 +80,7 @@ export default function Game() {
 
         if (isLastQuestionOfGame) {
           setEarned(prizePyramid.find((m) => m.id === questionInRound).amount);
+          setGameWon(true);
           setGameOver(true);
         } else if (questionInRound === 7) {
           setRoundOver(true);
@@ -108,7 +110,13 @@ export default function Game() {
     // Очищаємо всі активні таймери від попередньої гри
     timeouts.current.forEach(clearTimeout);
     timeouts.current = [];
-    setQuestionNumber(1);
+    if (gameWon) {
+      setQuestionNumber(1);
+      setGameWon(false);
+    } else {
+      const firstQuestionOfCurrentRound = (currentRoundNumber - 1) * 7 + 1;
+      setQuestionNumber(firstQuestionOfCurrentRound);
+    }
     setGameOver(false);
     setRoundOver(false);
     setSelectedAnswer(null);
@@ -121,7 +129,7 @@ export default function Game() {
   return (
     <div class="app">
       {gameOver ? (
-        <EndScreen earned={earned} onRestart={handleRestart} />
+        <EndScreen earned={earned} onRestart={handleRestart} gameWon={gameWon} />
       ) : roundOver ? (
         <RoundOverScreen
           onNextRound={handleNextRound}
