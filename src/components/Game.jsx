@@ -1,11 +1,13 @@
-import { useState, useEffect, useRef } from 'preact/hooks';
+import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 import { questions, prizePyramid } from '../questions';
 import EndScreen from './EndScreen';
+import RoundOverScreen from './RoundOverScreen';
 
 export default function Game() {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [gameOver, setGameOver] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [roundOver, setRoundOver] = useState(false);
   const [className, setClassName] = useState('answer');
   const [earned, setEarned] = useState("Нічого");
   const [timer, setTimer] = useState(30);
@@ -20,11 +22,19 @@ export default function Game() {
     };
   }, []);
 
-  useEffect(() => {
-    if (questionNumber > 1) {
-      setEarned(prizePyramid.find((m) => m.id === questionNumber - 1).amount);
-    }
+  const { questionInRound, currentRoundNumber } = useMemo(() => {
+    const qir = ((questionNumber - 1) % 7) + 1;
+    const crn = Math.floor((questionNumber - 1) / 7) + 1;
+    return { questionInRound: qir, currentRoundNumber: crn };
   }, [questionNumber]);
+
+  useEffect(() => {
+    if (questionInRound > 1) {
+      setEarned(prizePyramid.find((m) => m.id === questionInRound - 1).amount);
+    } else {
+      setEarned("Нічого");
+    }
+  }, [questionInRound]);
 
   // Цей ефект відповідає за зворотний відлік таймера.
   // Він запускається, коли гра не на паузі (немає вибраної відповіді) і не закінчена.
@@ -65,9 +75,13 @@ export default function Game() {
 
     if (a.correct) {
       delay(4000, () => {
-        if (questionNumber === questions.length) {
+        const isLastQuestionOfGame = questionNumber === questions.length;
+
+        if (isLastQuestionOfGame) {
+          setEarned(prizePyramid.find((m) => m.id === questionInRound).amount);
           setGameOver(true);
-          setEarned(prizePyramid.find((m) => m.id === questionNumber).amount);
+        } else if (questionInRound === 7) {
+          setRoundOver(true);
         } else {
           setQuestionNumber((prev) => prev + 1);
           setSelectedAnswer(null);
@@ -84,12 +98,19 @@ export default function Game() {
     setGameOver(true);
   };
 
+  const handleNextRound = () => {
+    setQuestionNumber(prev => prev + 1);
+    setSelectedAnswer(null);
+    setRoundOver(false);
+  };
+
   const handleRestart = () => {
     // Очищаємо всі активні таймери від попередньої гри
     timeouts.current.forEach(clearTimeout);
     timeouts.current = [];
     setQuestionNumber(1);
     setGameOver(false);
+    setRoundOver(false);
     setSelectedAnswer(null);
     setEarned("Нічого");
     setTimer(30);
@@ -101,6 +122,12 @@ export default function Game() {
     <div class="app">
       {gameOver ? (
         <EndScreen earned={earned} onRestart={handleRestart} />
+      ) : roundOver ? (
+        <RoundOverScreen
+          onNextRound={handleNextRound}
+          round={currentRoundNumber}
+          prize={prizePyramid.find(p => p.id === 7).amount}
+        />
       ) : (
         <>
           <div class="main">
@@ -133,10 +160,10 @@ export default function Game() {
           <div class="pyramid">
             <ul class="moneyList">
               {prizePyramid.map((m) => (
-                <li class={questionNumber === m.id ? 'moneyListItem active' : 'moneyListItem'}>
+                <li class={questionInRound === m.id ? 'moneyListItem active' : 'moneyListItem'}>
                   <span class="moneyListItemNumber">{m.id}</span>
                   <span class="moneyListItemAmount">
-                    {m.id < questionNumber ? m.amount : 'Сюрприз'}
+                    {m.id < questionInRound ? m.amount : 'Сюрприз'}
                   </span>
                 </li>
               ))}
