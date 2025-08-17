@@ -40,20 +40,27 @@ export default function Game() {
   // Цей ефект відповідає за зворотний відлік таймера.
   // Він запускається, коли гра не на паузі (немає вибраної відповіді) і не закінчена.
   useEffect(() => {
-    if (gameOver || selectedAnswer) return;
+    if (gameOver || selectedAnswer || roundOver) return;
     const interval = setInterval(() => {
       setTimer((prev) => prev - 1);
     }, 1000);
     // Очищаємо інтервал, коли компонент видаляється або змінюються залежності.
     return () => clearInterval(interval);
-  }, [gameOver, selectedAnswer]);
+  }, [gameOver, selectedAnswer, roundOver]);
 
   // Цей ефект перевіряє, чи не закінчився час, і завершує гру.
   useEffect(() => {
     if (timer === 0) {
+      // Якщо час вийшов, гравець програв. Розраховуємо гарантований виграш.
+      if (currentRoundNumber > 1) {
+        const guaranteedPrize = prizePyramid.find(p => p.id === 7)?.amount || "Нічого";
+        setEarned(guaranteedPrize);
+      } else {
+        setEarned("Нічого");
+      }
       setGameOver(true);
     }
-  }, [timer]);
+  }, [timer, currentRoundNumber]);
 
   // Цей ефект скидає таймер на 30 секунд при переході на нове питання.
   useEffect(() => {
@@ -90,7 +97,14 @@ export default function Game() {
         }
       });
     } else {
-      delay(5000, () => {
+      // Якщо відповідь неправильна, гравець програв. Розраховуємо гарантований виграш.
+      delay(4000, () => {
+        if (currentRoundNumber > 1) {
+          const guaranteedPrize = prizePyramid.find(p => p.id === 7)?.amount || "Нічого";
+          setEarned(guaranteedPrize);
+        } else {
+          setEarned("Нічого");
+        }
         setGameOver(true);
       });
     }
@@ -110,13 +124,20 @@ export default function Game() {
     // Очищаємо всі активні таймери від попередньої гри
     timeouts.current.forEach(clearTimeout);
     timeouts.current = [];
-    if (gameWon) {
+
+    // Визначаємо, з якого питання починати наступну гру.
+    // Це буде початок наступного раунду для нового гравця.
+    const nextRoundStartsAt = currentRoundNumber * 7 + 1;
+
+    if (gameWon || nextRoundStartsAt > questions.length) {
+      // Якщо гру повністю виграно або всі раунди пройдено, починаємо з самого початку.
       setQuestionNumber(1);
       setGameWon(false);
     } else {
-      const firstQuestionOfCurrentRound = (currentRoundNumber - 1) * 7 + 1;
-      setQuestionNumber(firstQuestionOfCurrentRound);
+      // Інакше, починаємо з наступного раунду.
+      setQuestionNumber(nextRoundStartsAt);
     }
+
     setGameOver(false);
     setRoundOver(false);
     setSelectedAnswer(null);
@@ -144,7 +165,7 @@ export default function Game() {
               <button
                 class="take-prize-btn"
                 onClick={handleTakePrize}
-                disabled={selectedAnswer !== null || questionNumber === 1}
+                disabled={selectedAnswer !== null || questionInRound === 1}
               >
                 Забрати виграш
               </button>
