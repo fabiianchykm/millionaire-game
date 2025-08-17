@@ -1,5 +1,4 @@
-import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import { questions, prizePyramid } from '../questions';
 import EndScreen from './EndScreen';
 
@@ -10,6 +9,16 @@ export default function Game() {
   const [className, setClassName] = useState('answer');
   const [earned, setEarned] = useState("Нічого");
   const [timer, setTimer] = useState(30);
+  const timeouts = useRef([]);
+
+  // Цей ефект виконається при видаленні компонента, очищаючи всі активні таймери.
+  // Це запобігає витокам пам'яті та помилкам, пов'язаним зі спробою
+  // оновити стан компонента, якого вже не існує.
+  useEffect(() => {
+    return () => {
+      timeouts.current.forEach(clearTimeout);
+    };
+  }, []);
 
   useEffect(() => {
     if (questionNumber > 1) {
@@ -17,25 +26,34 @@ export default function Game() {
     }
   }, [questionNumber]);
 
+  // Цей ефект відповідає за зворотний відлік таймера.
+  // Він запускається, коли гра не на паузі (немає вибраної відповіді) і не закінчена.
   useEffect(() => {
-    if (timer === 0) return setGameOver(true);
     if (gameOver || selectedAnswer) return;
-
     const interval = setInterval(() => {
       setTimer((prev) => prev - 1);
     }, 1000);
-
+    // Очищаємо інтервал, коли компонент видаляється або змінюються залежності.
     return () => clearInterval(interval);
-  }, [timer, gameOver, selectedAnswer]);
+  }, [gameOver, selectedAnswer]);
 
+  // Цей ефект перевіряє, чи не закінчився час, і завершує гру.
+  useEffect(() => {
+    if (timer === 0) {
+      setGameOver(true);
+    }
+  }, [timer]);
+
+  // Цей ефект скидає таймер на 30 секунд при переході на нове питання.
   useEffect(() => {
     setTimer(30);
   }, [questionNumber]);
 
   const delay = (duration, callback) => {
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       callback();
     }, duration);
+    timeouts.current.push(timeoutId);
   };
 
   const handleClick = (a) => {
@@ -67,6 +85,9 @@ export default function Game() {
   };
 
   const handleRestart = () => {
+    // Очищаємо всі активні таймери від попередньої гри
+    timeouts.current.forEach(clearTimeout);
+    timeouts.current = [];
     setQuestionNumber(1);
     setGameOver(false);
     setSelectedAnswer(null);
