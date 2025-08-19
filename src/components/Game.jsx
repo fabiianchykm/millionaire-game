@@ -133,20 +133,10 @@ export default function Game() {
     // Очищаємо всі активні таймери від попередньої гри
     timeouts.current.forEach(clearTimeout);
     timeouts.current = [];
-
-    // Визначаємо, з якого питання починати наступну гру.
-    // Це буде початок наступного раунду для нового гравця.
-    const nextRoundStartsAt = currentRoundNumber * 7 + 1;
-
-    if (gameWon || nextRoundStartsAt > questions.length) {
-      // Якщо гру повністю виграно або всі раунди пройдено, починаємо з самого початку.
-      setQuestionNumber(1);
-      setGameWon(false);
-    } else {
-      // Інакше, починаємо з наступного раунду.
-      setQuestionNumber(nextRoundStartsAt);
-    }
-
+ 
+    // Скидаємо гру до початкового стану, щоб завжди починати з першого питання.
+    setQuestionNumber(1);
+    setGameWon(false);
     setGameOver(false);
     setRoundOver(false);
     setSelectedAnswer(null);
