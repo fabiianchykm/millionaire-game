@@ -3,6 +3,8 @@ import { questions, prizePyramid } from '../questions';
 import EndScreen from './EndScreen';
 import RoundOverScreen from './RoundOverScreen';
 
+const TIMER_DURATION = 60; // 1 хвилина
+
 export default function Game() {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [gameOver, setGameOver] = useState(false);
@@ -11,7 +13,7 @@ export default function Game() {
   const [roundOver, setRoundOver] = useState(false);
   const [className, setClassName] = useState('answer');
   const [earned, setEarned] = useState("Нічого");
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(TIMER_DURATION);
   const timeouts = useRef([]);
 
   // Цей ефект виконається при видаленні компонента, очищаючи всі активні таймери.
@@ -62,9 +64,9 @@ export default function Game() {
     }
   }, [timer, currentRoundNumber]);
 
-  // Цей ефект скидає таймер на 30 секунд при переході на нове питання.
+  // Цей ефект скидає таймер при переході на нове питання.
   useEffect(() => {
-    setTimer(30);
+    setTimer(TIMER_DURATION);
   }, [questionNumber]);
 
   const delay = (duration, callback) => {
@@ -111,6 +113,13 @@ export default function Game() {
   };
 
   const handleTakePrize = () => {
+    // Якщо гравець забирає виграш на першому питанні нового раунду (після першого),
+    // він повинен отримати гарантований приз за попередній раунд.
+    if (questionInRound === 1 && currentRoundNumber > 1) {
+      const guaranteedPrize = prizePyramid.find(p => p.id === 7)?.amount || "Нічого";
+      setEarned(guaranteedPrize);
+    }
+    // В інших випадках стан `earned` вже містить правильне значення.
     setGameOver(true);
   };
 
@@ -142,7 +151,7 @@ export default function Game() {
     setRoundOver(false);
     setSelectedAnswer(null);
     setEarned("Нічого");
-    setTimer(30);
+    setTimer(TIMER_DURATION);
   }
 
   const currentQuestion = questions.find((q) => q.id === questionNumber);
@@ -165,7 +174,8 @@ export default function Game() {
               <button
                 class="take-prize-btn"
                 onClick={handleTakePrize}
-                disabled={selectedAnswer !== null || questionInRound === 1}
+                // Кнопка неактивна, якщо відповідь обробляється, або на першому питанні першого раунду.
+                disabled={selectedAnswer !== null || (questionInRound === 1 && currentRoundNumber === 1)}
               >
                 Забрати виграш
               </button>
