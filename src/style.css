@@ -210,3 +210,13 @@
     font-size: 20px;
     cursor: pointer;
 }
+
+.choice-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.end-screen p {
+    margin-top: 10px;
+}

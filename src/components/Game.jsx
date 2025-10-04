@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
 import { questions, prizePyramid } from '../questions';
 import EndScreen from './EndScreen';
 import RoundOverScreen from './RoundOverScreen';
+import ChoiceScreen from './ChoiceScreen';
 
 const TIMER_DURATION = 60; // 1 хвилина
 
@@ -10,6 +11,7 @@ export default function Game() {
   const [gameOver, setGameOver] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [gameWon, setGameWon] = useState(false);
+  const [showChoiceScreen, setShowChoiceScreen] = useState(false);
   const [roundOver, setRoundOver] = useState(false);
   const [className, setClassName] = useState('answer');
   const [guaranteedWinnings, setGuaranteedWinnings] = useState('Нічого');
@@ -44,13 +46,13 @@ export default function Game() {
   // Цей ефект відповідає за зворотний відлік таймера.
   // Він запускається, коли гра не на паузі (немає вибраної відповіді) і не закінчена.
   useEffect(() => {
-    if (gameOver || selectedAnswer || roundOver) return;
+    if (gameOver || selectedAnswer || roundOver || showChoiceScreen) return;
     const interval = setInterval(() => {
       setTimer((prev) => prev - 1);
     }, 1000);
     // Очищаємо інтервал, коли компонент видаляється або змінюються залежності.
-    return () => clearInterval(interval);
-  }, [gameOver, selectedAnswer, roundOver]);
+    return () => clearInterval(interval); // eslint-disable-line
+  }, [gameOver, selectedAnswer, roundOver, showChoiceScreen]);
 
   // Цей ефект скидає таймер при переході на нове питання.
   useEffect(() => {
@@ -73,25 +75,14 @@ export default function Game() {
 
     if (a.correct) {
       delay(4000, () => {
-        // Знаходимо приз для поточного рівня питання
-        const prizeForThisQuestion = prizePyramid.find(
-          m => m.id === questionInRound
-        )?.amount;
         const isLastQuestionOfGame = questionNumber === questions.length;
 
         if (isLastQuestionOfGame) {
           setEndReason('win');
           setGameWon(true);
           setGameOver(true);
-        } else if (questionInRound === 7) {
-          // Кінець раунду - це "незгораюча" сума. Зберігаємо її.
-          if (prizeForThisQuestion) {
-            setGuaranteedWinnings(prizeForThisQuestion);
-          }
-          setRoundOver(true);
         } else {
-          setQuestionNumber((prev) => prev + 1);
-          setSelectedAnswer(null);
+          setShowChoiceScreen(true);
         }
       });
     } else {
@@ -108,6 +99,25 @@ export default function Game() {
     // Гравець забирає виграш за попереднє правильно відповінене питання.
     setEndReason('take_prize');
     setGameOver(true);
+    setShowChoiceScreen(false);
+  };
+
+  const handleContinueGame = () => {
+    setShowChoiceScreen(false);
+
+    const prizeForThisQuestion = prizePyramid.find(
+      (m) => m.id === questionInRound
+    )?.amount;
+
+    if (questionInRound === 7) {
+      if (prizeForThisQuestion) {
+        setGuaranteedWinnings(prizeForThisQuestion);
+      }
+      setRoundOver(true);
+    } else {
+      setQuestionNumber((prev) => prev + 1);
+      setSelectedAnswer(null);
+    }
   };
 
   const handleNextRound = () => {
@@ -136,6 +146,7 @@ export default function Game() {
     setGameWon(false);
     setGameOver(false);
     setRoundOver(false);
+    setShowChoiceScreen(false);
     setSelectedAnswer(null);
     setEndReason(null);
     setGuaranteedWinnings('Нічого');
@@ -152,9 +163,9 @@ export default function Game() {
     }
 
     if (endReason === 'take_prize') {
-      const lastAnsweredLevel = questionInRound - 1;
-      if (lastAnsweredLevel < 1) return guaranteedWinnings;
-      return prizePyramid.find(p => p.id === lastAnsweredLevel)?.amount || guaranteedWinnings;
+      // При "забрати приз" гравець отримує виграш за останнє правильне питання
+      const currentPrize = prizePyramid.find(p => p.id === questionInRound)?.amount;
+      return currentPrize || guaranteedWinnings;
     }
 
     if (endReason === 'win') {
@@ -163,11 +174,20 @@ export default function Game() {
 
     return 'Нічого';
   }, [gameOver, endReason, questionInRound, guaranteedWinnings]);
+  
+  const prizeForChoiceScreen = useMemo(() => {
+    return prizePyramid.find(p => p.id === questionInRound)?.amount || 'Нічого';
+  }, [questionInRound]);
 
   return (
     <div class="app">
       {gameOver ? (
         <EndScreen earned={finalPrize} onRestart={handleRestart} gameWon={gameWon} />
+      ) : showChoiceScreen ? (
+        <ChoiceScreen
+          onContinue={handleContinueGame}
+          onTakePrize={handleTakePrize}
+          currentPrize={prizeForChoiceScreen} />
       ) : roundOver ? (
         <RoundOverScreen
           onNextRound={handleNextRound}
@@ -179,14 +199,6 @@ export default function Game() {
           <div class="main">
             <div class="top">
               <div class="timer">{timer}</div>
-              <button
-                class="take-prize-btn"
-                onClick={handleTakePrize}
-                // Кнопка неактивна, якщо відповідь обробляється, або на першому питанні першого раунду.
-                disabled={selectedAnswer !== null || (questionInRound === 1 && currentRoundNumber === 1)}
-              >
-                Забрати виграш
-              </button>
             </div>
             <div class="bottom">
               <div class="millionaire">
