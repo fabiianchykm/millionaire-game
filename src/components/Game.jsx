@@ -6,10 +6,19 @@ import ChoiceScreen from './ChoiceScreen';
 
 const TIMER_DURATION = 60; // 1 хвилина
 
+// Функція для перемішування масиву (алгоритм тасування Фішера-Єтса)
+const shuffleArray = (array) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
 export default function Game() {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [gameOver, setGameOver] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [gameWon, setGameWon] = useState(false);
   const [showChoiceScreen, setShowChoiceScreen] = useState(false);
   const [roundOver, setRoundOver] = useState(false);
@@ -17,7 +26,10 @@ export default function Game() {
   const [guaranteedWinnings, setGuaranteedWinnings] = useState('Нічого');
   const [endReason, setEndReason] = useState(null); // 'loss', 'timeout', 'take_prize', 'win'
   const [timer, setTimer] = useState(TIMER_DURATION);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const timeouts = useRef([]);
+  // Створюємо перемішаний список питань при першому рендері
+  const [shuffledQuestions, setShuffledQuestions] = useState(() => shuffleArray(questions));
 
   // Цей ефект виконається при видаленні компонента, очищаючи всі активні таймери.
   // Це запобігає витокам пам'яті та помилкам, пов'язаним зі спробою
@@ -74,7 +86,7 @@ export default function Game() {
     });
 
     if (a.correct) {
-      delay(4000, () => {
+      delay(5000, () => {
         const isLastQuestionOfGame = questionNumber === questions.length;
 
         if (isLastQuestionOfGame) {
@@ -88,7 +100,7 @@ export default function Game() {
     } else {
       // Якщо відповідь неправильна, гравець програє.
       // Його виграш - це гарантована сума з попереднього раунду.
-      delay(4000, () => {
+      delay(5000, () => {
         setEndReason('loss');
         setGameOver(true);
       });
@@ -131,6 +143,9 @@ export default function Game() {
     timeouts.current.forEach(clearTimeout);
     timeouts.current = [];
 
+    // Перемішуємо питання для нової гри
+    setShuffledQuestions(shuffleArray(questions));
+
     // Визначаємо, з якого питання починати наступну гру.
     // Це буде початок наступного раунду для нового гравця.
     const nextRoundStartsAt = currentRoundNumber * 7 + 1;
@@ -153,7 +168,8 @@ export default function Game() {
     setTimer(TIMER_DURATION);
   };
 
-  const currentQuestion = questions.find((q) => q.id === questionNumber);
+  // Беремо питання з перемішаного масиву за індексом
+  const currentQuestion = shuffledQuestions[questionNumber - 1];
 
   const finalPrize = useMemo(() => {
     if (!gameOver) return 'Нічого';
