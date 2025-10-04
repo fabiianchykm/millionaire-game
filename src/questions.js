@@ -918,4 +918,401 @@ export const questions = [
       { text: "67", correct: false },
     ],
   },
+  // Рівень 1
+  {
+    id: 92,
+    question: "Що важче: кілограм пір’я чи кілограм заліза?",
+    answers: [
+      { text: "Кілограм пір’я", correct: false },
+      { text: "Кілограм заліза", correct: false },
+      { text: "Вони важать однаково", correct: true },
+      { text: "Залежить від погоди", correct: false },
+    ],
+  },
+  {
+    id: 93,
+    question: "Що з цього не є фруктом?",
+    answers: [
+      { text: "Банан", correct: false },
+      { text: "Помідор", correct: false },
+      { text: "Огірок", correct: true },
+      { text: "Яблуко", correct: false },
+    ],
+  },
+  {
+    id: 94,
+    question: "Хто в Біблії тримав у руках скрижалі з 10 заповідями?",
+    answers: [
+      { text: "Авраам", correct: false },
+      { text: "Мойсей", correct: true },
+      { text: "Давид", correct: false },
+      { text: "Соломон", correct: false },
+    ],
+  },
+  {
+    id: 95,
+    question: "Якщо в поїзді 8 вагонів, а кожен вагон має по 4 купе, скільки всього купе?",
+    answers: [
+      { text: "32", correct: true },
+      { text: "24", correct: false },
+      { text: "12", correct: false },
+      { text: "16", correct: false },
+    ],
+  },
+  {
+    id: 96,
+    question: "Якщо на дереві сиділи 5 пташок і мисливець вистрілив у одну, скільки залишилося на дереві?",
+    answers: [
+      { text: "4", correct: false },
+      { text: "5", correct: false },
+      { text: "1", correct: false },
+      { text: "0", correct: true },
+    ],
+  },
+  {
+    id: 97,
+    question: "Що з цього є овочем?",
+    answers: [
+      { text: "Яблуко", correct: false },
+      { text: "Морква", correct: true },
+      { text: "Банан", correct: false },
+      { text: "Виноград", correct: false },
+    ],
+  },
+  {
+    id: 98,
+    question: "Хто з біблійних героїв тричі відрікся від Ісуса?",
+    answers: [
+      { text: "Іван", correct: false },
+      { text: "Петро", correct: true },
+      { text: "Яків", correct: false },
+      { text: "Павло", correct: false },
+    ],
+  },
+  {
+    id: 99,
+    question: "Хто з біблійних героїв збудував ковчег?",
+    answers: [
+      { text: "Ной", correct: true },
+      { text: "Авраам", correct: false },
+      { text: "Мойсей", correct: false },
+      { text: "Йосип", correct: false },
+    ],
+  },
+  {
+    id: 100,
+    question: "У якому місті народився Ісус?",
+    answers: [
+      { text: "Назарет", correct: false },
+      { text: "Вифлеєм", correct: true },
+      { text: "Єрусалим", correct: false },
+      { text: "Капернаум", correct: false },
+    ],
+  },
+  // Рівень 2
+  {
+    id: 101,
+    question: "Хто з героїв Біблії говорив з кущем, який горів, але не згорів?",
+    answers: [
+      { text: "Мойсей", correct: true },
+      { text: "Авраам", correct: false },
+      { text: "Самуїл", correct: false },
+      { text: "Ілля", correct: false },
+    ],
+  },
+  {
+    id: 102,
+    question: "Яку тварину вважають найшвидшою на суші?",
+    answers: [
+      { text: "Лев", correct: false },
+      { text: "Гепард", correct: true },
+      { text: "Кінь", correct: false },
+      { text: "Страус", correct: false },
+    ],
+  },
+  {
+    id: 103,
+    question: "Яка країна найбільша за площею?",
+    answers: [
+      { text: "Канада", correct: false },
+      { text: "США", correct: false },
+      { text: "Китай", correct: false },
+      { text: "Росія", correct: true },
+    ],
+  },
+  {
+    id: 104,
+    question: "Яка річка найдовша у світі?",
+    answers: [
+      { text: "Амазонка", correct: false },
+      { text: "Ніл", correct: true },
+      { text: "Міссісіпі", correct: false },
+      { text: "Янцзи", correct: false },
+    ],
+  },
+  {
+    id: 105,
+    question: "Хто з апостолів першим визнав Ісуса Христом як Сина Божого?",
+    answers: [
+      { text: "Петро", correct: true },
+      { text: "Іван", correct: false },
+      { text: "Яків", correct: false },
+      { text: "Фома", correct: false },
+    ],
+  },
+  {
+    id: 106,
+    question: "Хто з біблійних пророків був поглинутий великим китом?",
+    answers: [
+      { text: "Ілля", correct: false },
+      { text: "Йона", correct: true },
+      { text: "Ісая", correct: false },
+      { text: "Єремія", correct: false },
+    ],
+  },
+  {
+    id: 107,
+    question: "Хто був дружиною Авраама?",
+    answers: [
+      { text: "Сара", correct: true },
+      { text: "Ревека", correct: false },
+      { text: "Рахіль", correct: false },
+      { text: "Марія", correct: false },
+    ],
+  },
+  {
+    id: 108,
+    question: "Хто був першим сином Адама і Єви?",
+    answers: [
+      { text: "Каїн", correct: true },
+      { text: "Авель", correct: false },
+      { text: "Сет", correct: false },
+      { text: "Ной", correct: false },
+    ],
+  },
+  {
+    id: 109,
+    question: "Яке місто було столицею Давида?",
+    answers: [
+      { text: "Єрихон", correct: false },
+      { text: "Самарія", correct: false },
+      { text: "Єрусалим", correct: true },
+      { text: "Вифлеєм", correct: false },
+    ],
+  },
+  // Рівень 3
+  {
+    id: 110,
+    question: "Як називається найбільший орган людини?",
+    answers: [
+      { text: "Серце", correct: false },
+      { text: "Шкіра", correct: true },
+      { text: "Легені", correct: false },
+      { text: "Мозок", correct: false },
+    ],
+  },
+  {
+    id: 111,
+    question: "Що важливіше для виживання людини: вода чи їжа?",
+    answers: [
+      { text: "Вода", correct: true },
+      { text: "Їжа", correct: false },
+      { text: "Обидва однаково", correct: false },
+      { text: "Сон", correct: false },
+    ],
+  },
+  {
+    id: 112,
+    question: "Що швидше: звук чи світло?",
+    answers: [
+      { text: "Звук", correct: false },
+      { text: "Світло", correct: true },
+      { text: "Обидва однаково", correct: false },
+      { text: "Залежить від погоди", correct: false },
+    ],
+  },
+  {
+    id: 113,
+    question: "Яка країна складається з понад 17 тисяч островів?",
+    answers: [
+      { text: "Філіппіни", correct: false },
+      { text: "Індонезія", correct: true },
+      { text: "Мальдіви", correct: false },
+      { text: "Японія", correct: false },
+    ],
+  },
+  {
+    id: 114,
+    question: "Хто з біблійних героїв був ув’язнений у левячому рові?",
+    answers: [
+      { text: "Йосип", correct: false },
+      { text: "Даниїл", correct: true },
+      { text: "Самуїл", correct: false },
+      { text: "Ілля", correct: false },
+    ],
+  },
+  {
+    id: 115,
+    question: "Хто з біблійних пророків підняв на небеса вогненним возом?",
+    answers: [
+      { text: "Ілля", correct: true },
+      { text: "Єзекіїль", correct: false },
+      { text: "Ісая", correct: false },
+      { text: "Самуїл", correct: false },
+    ],
+  },
+  // Рівень 4
+  {
+    id: 116,
+    question: "Який із цих інструментів соціальних мереж справді належить компанії Meta?",
+    answers: [
+      { text: "TikTok", correct: false },
+      { text: "Instagram", correct: true },
+      { text: "Snapchat", correct: false },
+      { text: "Twitter", correct: false },
+    ],
+  },
+  {
+    id: 117,
+    question: "Яка компанія розробила операційну систему Android?",
+    answers: [
+      { text: "Apple", correct: false },
+      { text: "Google", correct: true },
+      { text: "Microsoft", correct: false },
+      { text: "Samsung", correct: false },
+    ],
+  },
+  {
+    id: 118,
+    question: "Який із цих месенджерів належить компанії Meta?",
+    answers: [
+      { text: "Telegram", correct: false },
+      { text: "WhatsApp", correct: true },
+      { text: "Signal", correct: false },
+      { text: "Snapchat", correct: false },
+    ],
+  },
+  // Рівень 5
+  {
+    id: 119,
+    question: "Хто з біблійних героїв мав 'кольоровий одяг', через який брати йому заздрили?",
+    answers: [
+      { text: "Давид", correct: false },
+      { text: "Йосип", correct: true },
+      { text: "Самуїл", correct: false },
+      { text: "Ісая", correct: false },
+    ],
+  },
+  {
+    id: 120,
+    question: "Хто був братом Мойсея і допомагав йому вести Ізраїль?",
+    answers: [
+      { text: "Аарон", correct: true },
+      { text: "Самуїл", correct: false },
+      { text: "Йосип", correct: false },
+      { text: "Давид", correct: false },
+    ],
+  },
+  {
+    id: 121,
+    question: "Яка найбільша книга Біблії за кількістю розділів?",
+    answers: [
+      { text: "Буття", correct: false },
+      { text: "Ісая", correct: false },
+      { text: "Єремія", correct: false },
+      { text: "Псалми", correct: true },
+    ],
+  },
+  {
+    id: 122,
+    question: "Хто з цих людей ніколи не був президентом США?",
+    answers: [
+      { text: "Джон Кеннеді", correct: false },
+      { text: "Барак Обама", correct: false },
+      { text: "Дональд Трамп", correct: false },
+      { text: "Вінстон Черчилль", correct: true },
+    ],
+  },
+  {
+    id: 123,
+    question: "Хто з біблійних царів отримав від Бога мудрість, але помилки привели до падіння його царства після смерті?",
+    answers: [
+      { text: "Саул", correct: false },
+      { text: "Давид", correct: false },
+      { text: "Соломон", correct: true },
+      { text: "Самуїл", correct: false },
+    ],
+  },
+  // Рівень 6
+  {
+    id: 124,
+    question: "Який герой, крім Ісуса, ходив по воді?",
+    answers: [
+      { text: "Мойсей", correct: false },
+      { text: "Ілля", correct: false },
+      { text: "Тоні Старк", correct: false },
+      { text: "Жоден", correct: true },
+    ],
+  },
+  {
+    id: 125,
+    question: "Яке місто було відоме як «місто стін», що впало після 7 днів облоги?",
+    answers: [
+      { text: "Єрихон", correct: true },
+      { text: "Содом", correct: false },
+      { text: "Газа", correct: false },
+      { text: "Вифсаїда", correct: false },
+    ],
+  },
+  // Рівень 7
+  {
+    id: 126,
+    question: "Який із цих металів не магнітний?",
+    answers: [
+      { text: "Залізо", correct: false },
+      { text: "Нікель", correct: false },
+      { text: "Алюміній", correct: true },
+      { text: "Кобальт", correct: false },
+    ],
+  },
+  {
+    id: 127,
+    question: "Хто в Біблії мав сон про сходи, що йшли до неба?",
+    answers: [
+      { text: "Йосип", correct: false },
+      { text: "Яків", correct: true },
+      { text: "Давид", correct: false },
+      { text: "Соломон", correct: false },
+    ],
+  },
+  {
+    id: 128,
+    question: "Хто був першим царем Ізраїлю, якого Бог обрав, але через непослух він втратив благословення?",
+    answers: [
+      { text: "Саул", correct: true },
+      { text: "Давид", correct: false },
+      { text: "Соломон", correct: false },
+      { text: "Самуїл", correct: false },
+    ],
+  },
+  {
+    id: 129,
+    question: "Хто був пророком, який отримав від Бога видіння про долину сухих кісток?",
+    answers: [
+      { text: "Ілля", correct: false },
+      { text: "Єзекіїль", correct: true },
+      { text: "Ісая", correct: false },
+      { text: "Єремія", correct: false },
+    ],
+  },
+  {
+    id: 130,
+    question: "Яке місто в Старому Завіті було столицею Филистимлян, де Самсон зруйнував храм, поваливши колони?",
+    answers: [
+      { text: "Ашдод", correct: false },
+      { text: "Газа", correct: true },
+      { text: "Ашкелон", correct: false },
+      { text: "Єрихон", correct: false },
+    ],
+  },
 ];
