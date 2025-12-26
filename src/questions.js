@@ -1,11 +1,11 @@
 export const prizePyramid = [
-  { id: 1, amount: "Аплодисменти від аудиторії" },
-  { id: 2, amount: "Ведучий похлопає по плечі" },
-  { id: 3, amount: "Батончик" },
-  { id: 4, amount: "Фото із Олегом Хімкою" },
-  { id: 5, amount: "М&м" },
-  { id: 6, amount: "Селфі з Іваном Пендлишаком" },
-  { id: 7, amount: "Особливий подарунок від Яринки" },
+  { id: 1, amount: "ручка" },
+  { id: 2, amount: "потиснути руку комусь із організаторів" },
+  { id: 3, amount: "чупа-чупс" },
+  { id: 4, amount: "кіндер" },
+  { id: 5, amount: "блокнот" },
+  { id: 6, amount: "прінглс" },
+  { id: 7, amount: "бутилочка" },
 ].reverse();
 
 export const questions = [
