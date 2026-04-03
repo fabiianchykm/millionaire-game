@@ -1085,5 +1085,45 @@ export const questions = [
       { text: "Кисень", correct: true },
       { text: "Метан", correct: false }
     ]
+  },
+  {
+    level: 7,
+    question: "На які родини поділяють \"ластоногих\"?\n",
+    answers: [
+      { text: "Справжні тюлені, вухачеві, моржеві; ", correct: true },
+      { text: "Псовидні, нерпи, моржеві; ", correct: false },
+      { text: "Прісноводні, солоноводні; ", correct: false },
+      { text: "Нерпи, тюлені, вухачеві;", correct: false }
+    ]
+  },
+  {
+    level: 7,
+    question: "Скільки було всіх Адамових днів які він жив?",
+    answers: [
+      { text: "800", correct: false },
+      { text: "100", correct: false },
+      { text: "120", correct: false },
+      { text: "930", correct: true }
+    ]
+  },
+  {
+    level: 4,
+    question: "Хто з українських гетьманів уклав Конституцію 1710 року?",
+    answers: [
+      { text: "Богдан Хмельницький", correct: false },
+      { text: "Петро Дорошенко", correct: false },
+      { text: "Іван Мазепа", correct: false },
+      { text: "Пилип Орлик", correct: true }
+    ]
+  },
+  {
+    level: 3,
+    question: "Яка кровоносна судина несе кров від серця до органів?",
+    answers: [
+      { text: "Вена", correct: false },
+      { text: "Артерія", correct: true },
+      { text: "Капіляр", correct: false },
+      { text: "Лімфатична судина", correct: false }
+    ]
   }
 ];
