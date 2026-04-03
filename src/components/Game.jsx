@@ -28,8 +28,16 @@ export default function Game() {
   const [timer, setTimer] = useState(TIMER_DURATION);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const timeouts = useRef([]);
-  // Створюємо перемішаний список питань при першому рендері
-  const [shuffledQuestions, setShuffledQuestions] = useState(() => shuffleArray(questions));
+  // Build a map of level → shuffled questions, used to pick per-level questions each round
+  const buildLevelQuestions = () => {
+    const map = {};
+    for (let lvl = 1; lvl <= 7; lvl++) {
+      map[lvl] = shuffleArray(questions.filter(q => q.level === lvl));
+    }
+    return map;
+  };
+
+  const [levelQuestions, setLevelQuestions] = useState(() => buildLevelQuestions());
 
   // Цей ефект виконається при видаленні компонента, очищаючи всі активні таймери.
   // Це запобігає витокам пам'яті та помилкам, пов'язаним зі спробою
@@ -144,13 +152,13 @@ export default function Game() {
     timeouts.current = [];
 
     // Перемішуємо питання для нової гри
-    setShuffledQuestions(shuffleArray(questions));
+    setLevelQuestions(buildLevelQuestions());
 
     // Визначаємо, з якого питання починати наступну гру.
     // Це буде початок наступного раунду для нового гравця.
     const nextRoundStartsAt = currentRoundNumber * 7 + 1;
 
-    if (gameWon || nextRoundStartsAt > questions.length) {
+    if (gameWon || nextRoundStartsAt > 999) {
       // Якщо гру повністю виграно або всі раунди пройдено, починаємо з самого початку.
       setQuestionNumber(1);
     } else {
@@ -168,8 +176,8 @@ export default function Game() {
     setTimer(TIMER_DURATION);
   };
 
-  // Беремо питання з перемішаного масиву за індексом
-  const currentQuestion = shuffledQuestions[questionNumber - 1];
+  // Pick question from the level pool: level = questionInRound, index = currentRoundNumber - 1
+  const currentQuestion = levelQuestions[questionInRound]?.[currentRoundNumber - 1];
 
   const finalPrize = useMemo(() => {
     if (!gameOver) return 'Нічого';
