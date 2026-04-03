@@ -2,10 +2,10 @@ export const prizePyramid = [
   { id: 1, amount: "ручка" },
   { id: 2, amount: "потиснути руку комусь із організаторів" },
   { id: 3, amount: "чупа-чупс" },
-  { id: 4, amount: "кіндер" },
+  { id: 4, amount: "снікерс" },
   { id: 5, amount: "блокнот" },
-  { id: 6, amount: "прінглс" },
-  { id: 7, amount: "бутилочка" },
+  { id: 6, amount: "кіндер" },
+  { id: 7, amount: "пляшечка" },
 ].reverse();
 
 export const questions = [

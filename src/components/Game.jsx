@@ -197,13 +197,14 @@ export default function Game() {
 
   return (
     <div class="app">
-      {gameOver ? (
-        <EndScreen earned={finalPrize} onRestart={handleRestart} gameWon={gameWon} />
-      ) : showChoiceScreen ? (
+      {showChoiceScreen && (
         <ChoiceScreen
           onContinue={handleContinueGame}
           onTakePrize={handleTakePrize}
           currentPrize={prizeForChoiceScreen} />
+      )}
+      {gameOver ? (
+        <EndScreen earned={finalPrize} onRestart={handleRestart} gameWon={gameWon} />
       ) : roundOver ? (
         <RoundOverScreen
           onNextRound={handleNextRound}
